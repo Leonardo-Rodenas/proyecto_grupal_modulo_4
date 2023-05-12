@@ -1,21 +1,27 @@
 import random
 # DESARROLLO - Continuación del trabajo.
 
+class Persona:
+    nombre:str
+    apellido:str
+
+    def __init__(self, nombre, apellido):
+        self.nombre = nombre
+        self.apellido = apellido
+
+
 # Definir la clase Cliente con su atributo y método
-class Cliente():
+class Cliente(Persona):
     # La Clase Cliente deberá contar con los siguientes atributos: ID Cliente, Nombre, Apellido, Correo, Fecha Registro y __Saldo
     id_cliente:int
-    nombre:str
-    apellido:str 
     correo:str 
     fecha_registro:str 
     __saldo:int
     tiene_tarjeta:bool = False
 
     def __init__(self, id_cliente, nombre, apellido, correo, saldo, fecha_registro = None):
+        super().__init__(nombre, apellido)
         self.id_cliente = id_cliente
-        self.nombre = nombre
-        self.apellido = apellido
         self.correo = correo
         self.__saldo = saldo
         self.fecha_registro = fecha_registro
@@ -155,20 +161,16 @@ class Producto():
         return self.stock
 
 # Creación clase: Vendedor.
-class Vendedor:
+class Vendedor(Persona):
     # La Clase Vendedor deberá contar con los siguientes atributos: RUN, Nombre, Apellido, Sección y __Comision = 0
     run:str 
-    nombre:str 
-    apellido:str
     __comision:int
-    cliente = Cliente
     seccion:str 
     producto:str
 
-    def __init__(self, run, nombre, apellido, producto, comision = 0.005, seccion = None):
+    def __init__(self, nombre, apellido, run, producto, comision = 0.005, seccion = None):
+        super().__init__(nombre, apellido)
         self.run = run
-        self.nombre = nombre
-        self.apellido = apellido
         self.seccion = seccion
         self.__comision = 0
         self.producto = producto
@@ -205,12 +207,12 @@ class Bodega:
     def __init__(self, nombre = "Bodega Default"):
         self.nombre = nombre
         self.productos = [
-            Producto("123546", "ZAPATILLAS", proveedor1, 20, 3500, "Deportes"),
-            Producto("465789", "POLERAS", proveedor2, 10, 3000),
-            Producto("456789", "ZAPATOS", proveedor2, 15, 45000, "Zapateria"),
-            Producto("159783","POLERÓN", proveedor3, 3, 25000),
-            Producto("125678", "CHAQUETA", proveedor4, 5, 7500, "Moda"),
-            Producto("142596", "GUANTES", proveedor5, 4, 5650),
+            Producto("123546", "ZAPATILLAS", proveedor1, 300, 3500, "Deportes"),
+            Producto("465789", "POLERAS", proveedor2, 700, 3000),
+            Producto("456789", "ZAPATOS", proveedor2, 500, 45000, "Zapateria"),
+            Producto("159783","POLERÓN", proveedor3, 600, 25000),
+            Producto("125678", "CHAQUETA", proveedor4, 450, 7500, "Moda"),
+            Producto("142596", "GUANTES", proveedor5, 290, 5650),
         ]
 
     def agregar_producto(self, sku, nombre, proveedor, stock, valor_neto, categoria=None):
@@ -278,9 +280,91 @@ class Ventas:
 
     def numero_de_clientes(self):
         return len(self.clientes)
-       
+
+
 # Crear la bodega virtual
 bodega = Bodega()
+
+class Sucursal:
+    id_sucursal:str
+    nombre:str
+    direccion:str
+    telefono:int
+    correo:str
+    stock: int
+
+    def __init__(self, id_sucursal, nombre, direccion, telefono, correo, stock):
+        self.id_sucursal = id_sucursal
+        self.nombre = nombre
+        self.direccion = direccion
+        self.telefono = telefono
+        self.correo = correo
+        self.stock = stock
+
+    def __str__(self):
+        return print(f"Stock actual: {self.stock}")
+
+    def solicitar_productos(self):
+        if self.stock < 50:
+            print("Solicitando y reponiendo productos...")
+            self.reponer_productos()
+        else:
+            print("No es necesario solicitar productos.")
+
+    def reponer_productos(self):
+        producto = bodega.buscar_producto("BODEGA")
+        if producto and producto.stock >= 300:
+            self.stock += 300
+            producto.stock -= 300
+            print(f"Se han repuesto 300 productos. Nuevo stock: {self.stock}")
+        else:
+            print("No existe suficiente stock en la bodega para reponer.")
+
+sucursal1 = Sucursal("1346789", "Sucursal 1", "Calle 1", 1234567, "sucursal_correo@example.com", 49)
+sucursal2 = Sucursal("1346789", "Sucursal 1", "Calle 1", 1234567, "sucursal_correo@example.com", 50)
+sucursal3 = Sucursal("1346789", "Sucursal 1", "Calle 1", 1234567, "sucursal_correo@example.com", 70)
+sucursal1.__str__()
+sucursal1.solicitar_productos()
+sucursal1.reponer_productos()
+sucursal2.__str__()
+sucursal2.solicitar_productos()
+sucursal2.reponer_productos()
+sucursal3.__str__()
+sucursal3.solicitar_productos()
+sucursal3.reponer_productos()
+
+class OrdenCompra:
+  
+    id_ordencompra: int
+    producto: Producto
+    despacho: bool
+
+    def __init__(self, id_ordencompra, producto, despacho):
+        self.id_ordencompra = id_ordencompra
+        self.producto = producto
+        self.despacho = despacho
+
+    def calcular_total(self, precio):
+        valor_neto = precio
+        impuesto = valor_neto * 0.19  # IVA en Chile
+        valor_total = valor_neto + impuesto
+        
+        if self.despacho == True:
+            valor_total += 5000
+            print("Detalle de la orden de compra:")
+            print(f"Valor neto: {valor_neto}")
+            print(f"Impuesto: {impuesto}")
+            print("Recargo por despacho: 5000")
+            print(f"Valor total: {valor_total}")
+        else:
+            print("Detalle de la orden de compra:")
+            print(f"Valor neto: {valor_neto}")
+            print(f"Impuesto: {impuesto}")
+            print("Sin recargo por despacho")
+            print(f"Valor total: {valor_total}")
+
+# # Crear la bodega virtual
+# bodega = Bodega()
 
 # Agregar productos a la bodega
 bodega.agregar_producto("123546", "ZAPATILLAS", proveedor1, 20, 3500, "Deportes")
@@ -364,3 +448,8 @@ vendedor2.vender(producto3, cliente1)
 proveedor1.solicitar_firma_documentos("Juan Perez", "Adidas", 55)
 cliente3.solicitar_tarjeta()
 cliente5.solicitar_entrega()
+
+producto1 = Producto("12364", "Zapatilla", "TeLoVendo", 10, 25000)
+orden_compra1 = OrdenCompra(1, producto1, True)
+orden_compra1.calcular_total(15000)
+
