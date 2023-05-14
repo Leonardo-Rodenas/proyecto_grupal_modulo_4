@@ -1,14 +1,13 @@
-from cliente import Cliente
-from abp_ejercicio_grupal_4 import bodega
+from .cliente import Cliente
 
 # Definir la clase Ventas que maneja los clientes y las ventas  
 class Ventas:
     def __init__(self, codigo_venta = None):
+        from abp_ejercicio_grupal_4 import Bodega
         self.id_cliente = None
         self.clientes = []
         self.ventas = []
         self.codigo_venta = codigo_venta
-
 
     def agregar_cliente(self, id_cliente, nombre, apellido, correo, fecha_registro, saldo):
         self.clientes.append(Cliente(id_cliente, nombre, apellido, correo, fecha_registro, saldo))
@@ -19,7 +18,11 @@ class Ventas:
                 return cliente
         return None
 
+
     def solicitar_compra(self, nombre, nombre_producto, stock=1):
+        # Crear la bodega virtual
+        from abp_ejercicio_grupal_4 import Bodega
+        bodega = Bodega()
         cliente = self.buscar_cliente(nombre)
         if not cliente:
             return f"Cliente {nombre} no encontrado."
@@ -32,6 +35,8 @@ class Ventas:
         return f"Compra de {stock} unidades de {nombre_producto} realizada por cliente ID = {nombre}."
 
     def existe_stock_necesario(self, nombre_producto, stock):
+        from abp_ejercicio_grupal_4 import Bodega
+        bodega = Bodega()
         producto = bodega.buscar_producto(nombre_producto)
         if not producto:
             return False

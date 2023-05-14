@@ -1,4 +1,4 @@
-# clase Proveedor con sus atributos y métodos
+# Definir la clase Proveedor con sus atributos y métodos
 class Proveedor:
     rut: str
     nombre_legal: str
@@ -41,3 +41,11 @@ class Proveedor:
             print("Datos validados. Documentos firmados correctamente.\n")
         else:
             print("Datos no válidos. No se ha firmado la documentación.\n")
+
+# #Instancias de clase proveedor y prueba de sus métodos
+# proveedor1 = Proveedor("55.210.101-1", "Adidas Chile S.A.", "Adidas", True)
+# proveedor2 = Proveedor("72.159.101-8", "Alibaba Ltda.", "Alibaba", True, "China")
+# proveedor3 = Proveedor("72.258.146-7", "Everlast S.A.", "Everlast", True, "USA")
+# proveedor4 = Proveedor("15.063.978-5", "Tomás Leiva E.I.R.L.", "Tómas Shop", True, "Chile")
+# proveedor5 = Proveedor("13.486.45", "Eduardo Carrasco S.A.", "Edo Store", True, "Chile")
+# proveedor1.juridica_o_natural()

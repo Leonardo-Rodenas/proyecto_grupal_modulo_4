@@ -1,6 +1,6 @@
-from proveedor import Proveedor
+from .proveedor import Proveedor
 
-# clase Producto con sus atributos y métodos
+# Definir la clase Producto con sus atributos y métodos
 class Producto():
     # La Clase Producto deberá contar con los siguientes atributos: SKU, Nombre, Categoría, Proveedor, Stock, Valor_Neto e __Impuesto = 1.19
     sku:int

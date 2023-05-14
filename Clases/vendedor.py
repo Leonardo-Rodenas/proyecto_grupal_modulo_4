@@ -1,22 +1,19 @@
 import random
-from cliente import Cliente
-from producto import Producto
+from .cliente import Cliente
+from .producto import Producto
+from .persona import Persona
 
 # Creación clase: Vendedor.
-class Vendedor:
+class Vendedor(Persona):
     # La Clase Vendedor deberá contar con los siguientes atributos: RUN, Nombre, Apellido, Sección y __Comision = 0
     run:str 
-    nombre:str 
-    apellido:str
     __comision:int
-    cliente = Cliente
     seccion:str 
     producto:str
 
-    def __init__(self, run, nombre, apellido, producto, comision = 0.005, seccion = None):
+    def __init__(self, nombre, apellido, run, producto, comision = 0.005, seccion = None):
+        super().__init__(nombre, apellido)
         self.run = run
-        self.nombre = nombre
-        self.apellido = apellido
         self.seccion = seccion
         self.__comision = 0
         self.producto = producto
@@ -31,7 +28,10 @@ class Vendedor:
         descuento = round(random.uniform(0.05, 0.1) * precio)
         precio_descuento = round(precio - descuento, 2)
         print(f"¡Oferta especial para {producto}! Precio original: ${precio}. Descuento: ${descuento}. Precio con descuento: ${precio_descuento}.")
-
+    
+    # Se deberá crear un método vender de la clase Vendedor
+    # Descontar el valor del producto del stock
+    # Calcular el valor final del producto y descontarlo del saldo del cliente
     def vender(self, producto: Producto, cliente: Cliente):
         if producto.stock == 0:
             print(f"{producto.nombre} no tiene stock disponible. No se ha podido procesar la venta. ")

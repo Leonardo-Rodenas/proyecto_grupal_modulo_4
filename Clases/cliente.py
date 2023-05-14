@@ -1,23 +1,22 @@
-# clase Cliente con su atributo y método
-    # Se debe crear métodos en la clase Cliente, lo cual puedan agregar y mostrar saldo.
-class Cliente():
+from .persona import Persona
+
+# Definir la clase Cliente con su atributo y método
+class Cliente(Persona):
     # La Clase Cliente deberá contar con los siguientes atributos: ID Cliente, Nombre, Apellido, Correo, Fecha Registro y __Saldo
     id_cliente:int
-    nombre:str
-    apellido:str 
     correo:str 
     fecha_registro:str 
     __saldo:int
     tiene_tarjeta:bool = False
 
     def __init__(self, id_cliente, nombre, apellido, correo, saldo, fecha_registro = None):
+        super().__init__(nombre, apellido)
         self.id_cliente = id_cliente
-        self.nombre = nombre
-        self.apellido = apellido
         self.correo = correo
         self.__saldo = saldo
         self.fecha_registro = fecha_registro
 
+    # Se debe crear métodos en la clase Cliente, lo cual puedan agregar y mostrar saldo.
     def obtener_saldo(self):
         return self.__saldo
     
